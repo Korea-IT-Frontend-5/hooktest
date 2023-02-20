@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import styled from "styled-components";
 
 function Q1() {
@@ -21,8 +22,35 @@ function Q1() {
 
         반대로 숨기기 텍스트로 바뀐 button을 누르면
         p태그는 보이지 않아야합니다
-
   */
+
+  // 1번 문제
+  const Htmlref = useRef(null);
+  const [text, setText] = useState('');
+
+  const textChange = () => {
+
+    // 아래 선언문이 바뀔때마다 계속 실행됨 화면이 마운트될때 선언해도 충분할텐데...
+    const inputtext = document.getElementById("input");
+
+    if(inputtext.value === inputtext.placeholder) {
+      setText("올바르게 입력하셨습니다");
+      Htmlref.current.style.color = "green";
+      return
+    }
+    Htmlref.current.style.color = "red";
+    setText("올바르게 글을 작성해주세요");
+  }
+
+  // 2번 문제
+  // isShow라는 이름의 state(상태값)을 이용하여 가상돔과 실제돔의 차이가 발생하여 리랜더링함
+  // 버튼의 텍스트는 아래의 삼항연산자를 이용하여 해결해봄
+  // showBtn내에서도 가능하나 코드의 간결성과 가독성을 고려해서 풀이함
+  const [isShow, setIsShow] = useState(false);
+
+  const showBtn = () => {
+    setIsShow((prev) => !prev);
+  }
 
   return (
     <>
@@ -30,17 +58,19 @@ function Q1() {
       <div>
         <h2>문제1-1.</h2>
         <input
+          id="input"
           type="text"
           placeholder={"김성용"}
           style={{ textAlign: "center" }}
+          onChange={textChange}
         />
-        <S.Message> 올바르게 입력하셨습니다 </S.Message>
+        <S.Message ref={Htmlref}>{text}</S.Message>
       </div>
 
       <div>
         <h2>문제1-2. </h2>
-        <button>보이기</button>
-        <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>
+        <button onClick={showBtn}>{isShow ? "숨기기" : "보이기"}</button>
+        {isShow && <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>}
       </div>
     </>
   );
