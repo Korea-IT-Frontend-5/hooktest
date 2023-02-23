@@ -25,22 +25,22 @@ function Q1() {
   */
 
   // 1번 문제
-  const Htmlref = useRef(null);
-  const [text, setText] = useState('');
+  const Htmlref = useRef(null);           // 올바르게 작성했는지 확인해주는 ref
+  const inputref = useRef(null);          // input텍스트를 기억하는 ref
+  const [text, setText] = useState('');   // text의 상태값을 기억하는 state
 
   const textChange = () => {
 
     // 아래 선언문이 바뀔때마다 계속 실행됨 화면이 마운트될때 선언해도 충분할텐데...
-    const inputtext = document.getElementById("input");
-
-    if(inputtext.value === inputtext.placeholder) {
+    if (inputref.current.value === inputref.current.placeholder) {
       setText("올바르게 입력하셨습니다");
       Htmlref.current.style.color = "green";
-      return
+      return;
     }
     Htmlref.current.style.color = "red";
     setText("올바르게 글을 작성해주세요");
   }
+  // onChange
 
   // 2번 문제
   // isShow라는 이름의 state(상태값)을 이용하여 가상돔과 실제돔의 차이가 발생하여 리랜더링함
@@ -58,7 +58,7 @@ function Q1() {
       <div>
         <h2>문제1-1.</h2>
         <input
-          id="input"
+          ref={inputref}
           type="text"
           placeholder={"김성용"}
           style={{ textAlign: "center" }}
