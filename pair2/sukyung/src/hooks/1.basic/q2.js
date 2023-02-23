@@ -1,13 +1,36 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function Q2() {
-  const arr = [];
+  const arr = useRef([]);
+  const [newInput, setNewInput] = useState('');
   const [forceRender, setForceRender] = useState(false);
+  const [isBlank, setIsBlank] = useState(true);
 
   const onAddList = () => {
     setForceRender((prev) => !prev);
-    arr.push();
+    arr.current.push(newInput);
+    setNewInput('');
+    console.log(arr);
   };
+
+  const onChnageInput = (e) => {
+    setNewInput(e.target.value);
+    console.log(e.target.value);
+  }
+
+  const onSubmitBtn = () => {
+    if (arr.current.length === 0) {
+      setIsBlank(true);
+    } else {
+      setIsBlank(false);
+    }
+  }
+
+  const txtRef = useRef(null);
+
+  const onChangeTxtStyle = () => {
+    txtRef.current.style.color = 'orange';
+  }
 
   /* 
     문제2
@@ -47,22 +70,25 @@ function Q2() {
       <div>
         <h2>문제 2-1</h2>
         <p>
-          <input />
+          <input onChange={onChnageInput} value={newInput} />
         </p>
         <p>
           <button onClick={onAddList}>추가</button>
         </p>
         <p>
-          <button>제출</button>
+          <button onClick={onSubmitBtn}>제출</button>
         </p>
 
-        <p>제출된 목록이 없습니다</p>
+        {isBlank ? <p>제출된 목록이 없습니다</p> : <ul>
+          {arr.current.map((item, idx) => (<li key={idx}>{item}</li>))}
+        </ul> }
+        
         <ul>{/* -- list -- */}</ul>
       </div>
       <div>
         <h2>문제 2-2</h2>
-        <p> 이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
-        <button>변경</button>
+        <p ref={txtRef}> 이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
+        <button onClick={onChangeTxtStyle}>변경</button>
       </div>
     </>
   );
