@@ -43,11 +43,6 @@ function State3() {
 
   //console.log(productList);
 
-  //const [proList, setProList] = useState(productList.products)
-
-  
-  const [proNum, setProNum] = useState('');
-
   const navigate = useNavigate();
 
   const onNavigateDetailPage = (proNum) => {

@@ -129,9 +129,7 @@ function State2() {
       </div>
       <S.CommentList>
         {/* list */}
-        {/* 예시 데이터 */}
         {post.Comments.map((list, inx) => {
-          //console.log(list)
           return <Comment key={inx} list={list} onCommDel={onCommDel} onCommEdit={onCommEdit} />
         })}
       </S.CommentList>

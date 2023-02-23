@@ -3,10 +3,6 @@ import styled from "styled-components";
 
 function ProductCard({ onNavigate, proCard }) {
 
-  //const [proNum, setProNum] = useState(proCard.productNumber);
-  //setProNum(proCard.productNumber);
-  //console.log(proNum)
-
   const proPrice = proCard.productPrice;
   const newProPrice = proPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 

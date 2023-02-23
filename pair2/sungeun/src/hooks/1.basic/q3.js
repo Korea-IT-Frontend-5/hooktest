@@ -34,9 +34,6 @@ function Q3() {
     setIsAction(false);
   }
 
-  // if(!isAction) return;
-  // console.log(isAction)
-
   return (
     <>
       <h1>문제3</h1>

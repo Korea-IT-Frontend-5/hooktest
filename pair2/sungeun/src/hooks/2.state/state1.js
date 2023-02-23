@@ -37,8 +37,6 @@ function State1() {
     <>
       <h1>문제1</h1>
       <ul>
-        {/* list */}
-        {/* 예시 데이터입니다 */}
         {newPlayList.map((list, inx) => (
           <li key={inx}>
             <h3>{list.title}</h3>

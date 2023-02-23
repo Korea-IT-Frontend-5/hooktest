@@ -36,11 +36,8 @@ function Q2() {
   // 2-1
   const arr = useRef([]);
   const [forceRender, setForceRender] = useState(false);
-  const [arrList, setArrList] = useState([]);
-  const [arrLengthOld, setArrLengthOld] = useState(0);
-  const [arrLengthNow, setArrLengthNow] = useState(0);
+  // const [arrList, setArrList] = useState([]);
   const [txtArr, setTxtArr] = useState('');
-  const [isArrAction, setIsArrAction] = useState(false);
 
   const dataAdd = (e) => {
     e.preventDefault();
@@ -49,36 +46,25 @@ function Q2() {
 
   const onAddList = () => {
     if(txtArr === '') return;
-    setArrLengthOld(arr.current.length)
     arr.current.push(txtArr);
     setTxtArr('');
-    setArrLengthNow(arr.current.length)
-    //setIsArrAction(false)
+    console.log(arr.current)
   }
-
+  
   const onListView = () => {
-    //console.log(isArrAction, arrList)    
-
-    //setIsArrAction(true);
-    console.log(isArrAction)
-    if(arrLengthNow !== arrLengthOld && isArrAction){
-      setForceRender(true);
-      setArrList(arr.current);
-      //setIsArrAction(false)
-    }else{
-      setForceRender(false);
-      setArrList('');
-      // if(isArrAction){
-        //setIsArrAction(false)
-      // }
-  
-      //console.log(isArrAction, arrList)
+    if (arr.current.length > 0) {
+      setForceRender(true)
     }
-    //console.log(isArrAction, arrList)
-  
+    const arrUl = document.getElementById('listView');
+    arr.current.forEach((list) => {
+      const arrLi = document.createElement('li');
+      arrLi.textContent = list;
+    });
+    // arrUl.append(arrList)
+    // console.log(arrList)
+    // console.log(arrList)
   }
-  console.log(isArrAction, arrList)
-  
+
   // 2-2
   const txtColor = useRef(null);
   const [txtColorCheck, setTxtColorCheck] = useState(false);
@@ -90,7 +76,7 @@ function Q2() {
       txtColor.current.style.color = "yellow"
     }
   }
-     
+
   return (
     <>
       <h1>문제2</h1>
@@ -107,11 +93,7 @@ function Q2() {
         </p>
 
         {!forceRender && <p>제출된 목록이 없습니다</p>}
-        <ul>
-          {forceRender && arrList.map((list) => (
-            <li>{list}</li>
-          ))}
-        </ul>
+        {forceRender && <ul id="listView"></ul>}
       </div>
       <div>
         <h2>문제 2-2</h2>
