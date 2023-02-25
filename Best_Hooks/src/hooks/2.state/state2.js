@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
+import UseInputs from "../../components/inputs/useInputs";
 
 function State2() {
   /*  
@@ -63,6 +64,39 @@ function State2() {
     ],
   });
 
+  const [{ nickname, content }, onchangForm, reset] = UseInputs({
+    nickname: "",
+    content: "",
+  });
+
+  const commJoin = (e) => {
+    const newPostComm = [
+      { User: { nickname }, content, myComment: true },
+      ...post.Comments,
+    ];
+    post.Comments = newPostComm;
+    setPost(post);
+    reset();
+  };
+
+  const onCommDel = (list) => {
+    if (list.myComment) {
+      const delComm = post.Comments.filter((newlist) => newlist !== list);
+      post.Comments = delComm;
+      setPost({ ...post });
+    } else {
+      alert("본인 작성 댓글이 아닙니다.");
+    }
+  };
+
+  const onCommEdit = (list, content, setIsEdit) => {
+    if (list.myComment) {
+      list.content = content;
+      setIsEdit((prev) => !prev);
+    } else {
+      alert("본인 작성 댓글이 아닙니다.");
+    }
+  };
   return (
     <S.Wrapper>
       <h1>문제2</h1>
@@ -85,14 +119,32 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" />
-        <input placeholder="댓글 내용" />
-        <button>댓글 작성</button>
+        <input
+          name="nickname"
+          value={nickname}
+          onChange={onchangForm}
+          placeholder="작성자"
+        />
+        <input
+          name="content"
+          value={content}
+          onChange={onchangForm}
+          placeholder="댓글 내용"
+        />
+        <button onClick={commJoin}>댓글 작성</button>
       </div>
       <S.CommentList>
         {/* list */}
-        {/* 예시 데이터 */}
-        <Comment />
+        {post.Comments.map((list, inx) => {
+          return (
+            <Comment
+              key={inx}
+              list={list}
+              onCommDel={onCommDel}
+              onCommEdit={onCommEdit}
+            />
+          );
+        })}
       </S.CommentList>
     </S.Wrapper>
   );

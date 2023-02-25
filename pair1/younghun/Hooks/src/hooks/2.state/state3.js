@@ -41,12 +41,6 @@ function State3() {
         구매평을 추가할 수 있습니다 (수정 및 삭제는 state2에서 풀이하였으므로 구현하지 않아도 괜찮습니다)
   */
 
-  console.log(productList); // 상품목록
-  console.log(productList.products); // 상품목록
-  console.log(productList.products[0]); // 하나의 특정 상품
-  console.log(productList.products[0].Review); // 하나의 특정 상품의 리뷰목록
-  console.log(productList.products[0].Review[0]); // 하나의 특정 상품의 하나의 특정 리뷰
-
   const navigate = useNavigate();
 
   const onNavigateDetailPage = (Number) => {

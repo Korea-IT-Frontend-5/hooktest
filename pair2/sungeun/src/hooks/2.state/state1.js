@@ -23,9 +23,12 @@ function State1() {
   })
 
   const onSummerAdd = (e) => {
-    e.preventDefault();
-    setNewPlayList([...newPlayList, {title, signer}]);
-    reset();
+    if (title !== "" && signer !== "") {
+      setNewPlayList([...newPlayList, { title, signer }]);
+      reset();
+    } else {
+      alert("값이 비어있어요");
+    }
   }
 
   const onPlayListDel = ( title ) => {

@@ -54,8 +54,6 @@ function State3() {
       <h1>문제3</h1>
       <h2>상품 목록</h2>
       <ul>
-        {/* list */}
-        {/* 예시 데이터 */}
         {productList.products.map((proCard, inx)=>(
           <ProductCard key={inx} proCard={proCard} onNavigate={onNavigateDetailPage} />
         ))}

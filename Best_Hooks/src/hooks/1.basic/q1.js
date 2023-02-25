@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 function Q1() {
@@ -24,6 +25,20 @@ function Q1() {
 
   */
 
+  //문제 1-1
+  const [inputData, setInputData] = useState("");
+  const [placeholder, setPlaceholder] = useState("");
+
+  const handleInputChange = (e) => {
+    setPlaceholder(e.target.placeholder);
+    setInputData(e.target.value);
+  };
+
+  //문제 1-2
+  const [isShow, setIsShow] = useState(false);
+  const handleIsShow = () => {
+    setIsShow((prev) => !prev);
+  };
   return (
     <>
       <h1>문제1</h1>
@@ -33,22 +48,34 @@ function Q1() {
           type="text"
           placeholder={"김성용"}
           style={{ textAlign: "center" }}
+          onChange={handleInputChange}
         />
-        <S.Message> 올바르게 입력하셨습니다 </S.Message>
-      </div>
 
+        {placeholder &&
+          (inputData === placeholder ? (
+            <S.Message> 올바르게 입력하셨습니다 </S.Message>
+          ) : (
+            <S.BedMessage> 올바르게 글을 작성해주세요 </S.BedMessage>
+          ))}
+      </div>
       <div>
         <h2>문제1-2. </h2>
-        <button>보이기</button>
-        <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>
+        <button onClick={handleIsShow}>{isShow ? "숨기기" : "보이기"}</button>
+        {isShow && <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>}
       </div>
     </>
   );
 }
 export default Q1;
 
-const Message = styled.p``;
+const Message = styled.p`
+  color: green;
+`;
+const BedMessage = styled.p`
+  color: red;
+`;
 
 const S = {
   Message,
+  BedMessage,
 };
