@@ -36,8 +36,8 @@ function Q2() {
   // 2-1
   const arr = useRef([]);
   const [forceRender, setForceRender] = useState(false);
-  // const [arrList, setArrList] = useState([]);
   const [txtArr, setTxtArr] = useState('');
+  const [isBlank, setIsBlank] = useState(true);
 
   const dataAdd = (e) => {
     e.preventDefault();
@@ -45,24 +45,30 @@ function Q2() {
   }
 
   const onAddList = () => {
-    if(txtArr === '') return;
+    setForceRender((prev)=>!prev);
+    // if(txtArr === '') return;
     arr.current.push(txtArr);
     setTxtArr('');
-    console.log(arr.current)
   }
   
   const onListView = () => {
-    if (arr.current.length > 0) {
-      setForceRender(true)
+    if(arr.current.length === 0 || arr.current === '') {
+      setIsBlank(true);
+    }else{
+      setIsBlank(false);
     }
-    const arrUl = document.getElementById('listView');
-    arr.current.forEach((list) => {
-      const arrLi = document.createElement('li');
-      arrLi.textContent = list;
-    });
-    // arrUl.append(arrList)
-    // console.log(arrList)
-    // console.log(arrList)
+    // const arrUl = document.getElementById('listView');
+    // const arrLi = document.createElement('li');
+
+    // if (arr.current.length > 0) {
+    //   setForceRender(true)
+    // }
+    
+    // arr.current.forEach((list, inx) => {
+    //   arrLi.textContent = arr.current[inx];
+    // });
+    // console.log(arrUl, arrLi);
+    // arrUl.appendChild(arrLi);
   }
 
   // 2-2
@@ -92,8 +98,9 @@ function Q2() {
           <button onClick={onListView}>제출</button>
         </p>
 
-        {!forceRender && <p>제출된 목록이 없습니다</p>}
-        {forceRender && <ul id="listView"></ul>}
+        {isBlank ? <p>제출된 목록이 없습니다</p>
+          : <ul>{arr.current.map((item, idx) => (<li key={idx}>{item}</li>))}</ul>
+        }
       </div>
       <div>
         <h2>문제 2-2</h2>

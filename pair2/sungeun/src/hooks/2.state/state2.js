@@ -78,14 +78,9 @@ function State2() {
   
   const onCommDel = (list) => {
     if (list.myComment){
-      /*const delComm = post.Comments.filter((newlist) => newlist !== list);
+      const delComm = post.Comments.filter((newlist) => newlist !== list);
       post.Comments = delComm;
-      setPost(post);*/
-      const reComm = post;
-      const delComm = reComm.Comments.filter((newlist) => newlist !== list)
-      reComm.Comments = delComm;
-      setPost(reComm);
-      //console.log(reComm)
+      setPost({...post});
     }else{
       alert('본인 작성 댓글이 아닙니다.')
     }
