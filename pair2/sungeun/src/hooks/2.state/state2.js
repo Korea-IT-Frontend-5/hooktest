@@ -85,7 +85,6 @@ function State2() {
       alert('본인 작성 댓글이 아닙니다.')
     }
   }
-  console.log(post)
 
   const onCommEdit = (list, content, setIsEdit) => {
     if (list.myComment){
