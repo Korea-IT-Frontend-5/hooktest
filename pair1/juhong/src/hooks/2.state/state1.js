@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import PlayListMock from "../../__mock__/playList.json";
 
 function State1() {
@@ -14,26 +15,45 @@ function State1() {
   console.log(PlayListMock.playlist);
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
 
+  const arr = useRef(PlayListMock.playlist);
+  const inputTitle = useRef('');
+  const inputSinger = useRef('');
+
+  const addBtn = () => {
+    console.log(inputTitle.current.value);
+    console.log(inputSinger.current.value);
+    if (!inputTitle.current.value && !inputSinger.current.value) {
+      arr.current.push(
+        {
+          title: inputTitle.current.value,
+          singer: inputSinger.current.value
+        }
+      )
+    }
+  };
+
   return (
     <>
       <h1>문제1</h1>
       <ul>
-        {/* list */}
-        {/* 예시 데이터입니다 */}
-        <li>
-          <h3>Summer</h3>
-          <p>Joe Hisaishi</p>
-        </li>
+        {arr.current.map((item) => {
+          return (
+            <li>
+            <h3>{item.title}</h3>
+            <p>{item.signer}</p>
+          </li>
+          )
+        })}
       </ul>
       <div>
         <p>
-          곡명 : <input />
+          곡명 : <input useRef={inputTitle}/>
         </p>
         <p>
-          가수/작곡 : <input />
+          가수/작곡 : <input useRef={inputSinger}/>
         </p>
         <p>
-          <button>추가</button>
+          <button onClick={addBtn}>추가</button>
         </p>
       </div>
     </>

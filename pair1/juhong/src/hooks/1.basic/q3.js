@@ -28,14 +28,6 @@ function Q3() {
   // 줄넘기 횟수 관리
   const [swingCount, setSwingCount] = useState(0);
 
-  const startBtn = () => {
-    setSwingState(true);
-  };
-
-  const stopBtn = () => {
-    setSwingState(false);
-  };
-
   /*
   맨처음엔 버튼도 useEffect를 이용해서 풀어 보았으나 코드가 너무 이상했다.
   
@@ -62,10 +54,10 @@ function Q3() {
           <Q3components count={swingCount} setCount={setSwingCount} />
         )}
         <p>
-          <button onClick={startBtn}>줄넘기 시작</button>
+          <button onClick={()=>setSwingState(true)}>줄넘기 시작</button>
         </p>
         <p>
-          <button onClick={stopBtn}>줄넘기 중지</button>
+          <button onClick={()=>setSwingState(false)}>줄넘기 중지</button>
         </p>
       </div>
     </>
