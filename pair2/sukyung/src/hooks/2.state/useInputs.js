@@ -7,7 +7,7 @@ const useInputs = (initialValue) => {
     setValues((prev) => ({...prev, [e.target.name]: e.target.value}));
   };
 
-  return [values, setValues, onChangeForm];
+  return [values, onChangeForm, setValues];
 
 }
 export default useInputs;

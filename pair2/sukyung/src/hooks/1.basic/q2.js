@@ -7,7 +7,8 @@ function Q2() {
   const [isBlank, setIsBlank] = useState(true);
 
   const onAddList = () => {
-    setForceRender((prev) => !prev);
+    setForceRender((prev) => !prev);// 강제 렌더링
+
     arr.current.push(newInput);
     setNewInput('');
     console.log(arr);
@@ -19,7 +20,7 @@ function Q2() {
   }
 
   const onSubmitBtn = () => {
-    if (arr.current.length === 0) {
+    if (arr.current.length === 0 ) {
       setIsBlank(true);
     } else {
       setIsBlank(false);

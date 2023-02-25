@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
+import useInputs from "./useInputs";
 
 function State2() {
   /*  
@@ -62,6 +63,31 @@ function State2() {
       },
     ],
   });
+ 
+  const [{newUser, newContent}, onChangeForm, setValues] = useInputs({newUser: '', newContent: ''});
+
+  const onClickAddBtn = () => {
+   post.Comments.push({
+      User: {
+        nickname: newUser,
+      },
+      content: newContent,
+      myComment: true
+    });
+    setPost({...post});  
+    setValues({newUser: '', newContent: ''});
+  }
+
+  const onClickDeleteBtn = (comment) => {
+
+    if (comment.myComment) {
+      const newPostDeleteCmt = post.Comments.filter((cmt) => (cmt !== comment));
+      console.log(newPostDeleteCmt);
+     
+      setPost((prev) => ({...prev, Comments: newPostDeleteCmt}));  
+    } else return;
+  }
+
 
   return (
     <S.Wrapper>
@@ -85,14 +111,14 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" />
-        <input placeholder="댓글 내용" />
-        <button>댓글 작성</button>
+        <input placeholder="작성자" value={newUser} name="newUser" onChange={onChangeForm}/>
+        <input placeholder="댓글 내용" value={newContent} name="newContent" onChange={onChangeForm} />
+        <button onClick={onClickAddBtn}>댓글 작성</button>
       </div>
       <S.CommentList>
-        {/* list */}
-        {/* 예시 데이터 */}
-        <Comment />
+        {post.Comments.map((comment, idx) => (
+          <Comment comment={comment} idx={idx} onClickDeleteBtn={onClickDeleteBtn} />
+        ))}
       </S.CommentList>
     </S.Wrapper>
   );

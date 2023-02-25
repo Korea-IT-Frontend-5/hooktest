@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
-function ProductCard({ onNavigate }) {
+function ProductCard({ onNavigate, products }) {
+
+  let {productName, productNumber, productPrice, productSize, productRating, productReview} = products;
+
+  productPrice = productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   return (
     <S.Item onClick={onNavigate}>
-      <h4>구멍난 양말</h4>
-      <p>상품번호: 302012</p>
-      <p>가격: 3000원</p>
-      <p>사이즈: X, M, L</p>
-      <p>평점: 4.5</p>
-      <p>리뷰: 14</p>
+      <h4>{productName}</h4>
+      <p>상품번호: {productNumber}</p>
+      <p>가격: {productPrice}원</p>
+      <p>사이즈: {productSize}</p>
+      <p>평점: {productRating}</p>
+      <p>리뷰: {productReview}</p>
     </S.Item>
   );
 }

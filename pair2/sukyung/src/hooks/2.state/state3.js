@@ -40,12 +40,12 @@ function State3() {
         구매평을 추가할 수 있습니다 (수정 및 삭제는 state2에서 풀이하였으므로 구현하지 않아도 괜찮습니다)
   */
 
-  console.log(productList);
+  // console.log(productList.products);
 
   const navigate = useNavigate();
+  const onNavigateDetailPage = (num) => {
 
-  const onNavigateDetailPage = () => {
-    navigate(`/state/detail/1`);
+    navigate(`/state/detail/${num}`);
   };
 
   return (
@@ -53,9 +53,9 @@ function State3() {
       <h1>문제3</h1>
       <h2>상품 목록</h2>
       <ul>
-        {/* list */}
-        {/* 예시 데이터 */}
-        <ProductCard onNavigate={onNavigateDetailPage} />
+        {productList.products.map((products) => (
+          <ProductCard onNavigate={() => onNavigateDetailPage(products.productNumber)} products={products} />
+        ))}
       </ul>
     </>
   );

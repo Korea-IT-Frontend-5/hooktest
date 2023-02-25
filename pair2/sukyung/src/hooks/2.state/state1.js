@@ -13,11 +13,11 @@ function State1() {
     삭제 버턴을 눌렀을 때 데이터가 삭제될 수 있도록 해주세요
   */
 
-  console.log(PlayListMock.playlist);
+  // console.log(PlayListMock.playlist);
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
 
   const [playList, setPlayList] = useState(PlayListMock.playlist);
-  const[{title, signer}, setValues, onChangeForm] = useInputs({title: '', signer: ''});
+  const[{title, signer}, onChangeForm, setValues] = useInputs({title: '', signer: ''});
 
   const onAddList = () => {
     setPlayList([...playList, {title, signer}]);
@@ -26,7 +26,7 @@ function State1() {
 
   const onDeleteList = (tit) => {
     const newPlayList = playList.filter((item) => item.title !== tit);
-    console.log(tit);
+    // console.log(tit);
     setPlayList(newPlayList);
   }
 
