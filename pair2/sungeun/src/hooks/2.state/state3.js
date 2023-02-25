@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ProductCard from "../../components/2.state/product";
@@ -40,12 +41,12 @@ function State3() {
         구매평을 추가할 수 있습니다 (수정 및 삭제는 state2에서 풀이하였으므로 구현하지 않아도 괜찮습니다)
   */
 
-  console.log(productList);
+  //console.log(productList);
 
   const navigate = useNavigate();
 
-  const onNavigateDetailPage = () => {
-    navigate(`/state/detail/1`);
+  const onNavigateDetailPage = (proNum) => {
+    navigate(`/state/detail/${proNum}`);
   };
 
   return (
@@ -55,7 +56,9 @@ function State3() {
       <ul>
         {/* list */}
         {/* 예시 데이터 */}
-        <ProductCard onNavigate={onNavigateDetailPage} />
+        {productList.products.map((proCard, inx)=>(
+          <ProductCard key={inx} proCard={proCard} onNavigate={onNavigateDetailPage} />
+        ))}
       </ul>
     </>
   );

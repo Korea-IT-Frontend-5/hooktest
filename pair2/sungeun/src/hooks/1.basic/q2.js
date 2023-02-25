@@ -1,14 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function Q2() {
-  const arr = [];
-  const [forceRender, setForceRender] = useState(false);
-
-  const onAddList = () => {
-    setForceRender((prev) => !prev);
-    arr.push();
-  };
-
   /* 
     문제2
 
@@ -41,28 +33,71 @@ function Q2() {
         따라서 useRef는 사용하여 해당 문구의 색상을 변경해보세요 :)
   */
 
+  // 2-1
+  const arr = useRef([]);
+  const [forceRender, setForceRender] = useState(false);
+  const [txtArr, setTxtArr] = useState('');
+
+  const dataAdd = (e) => {
+    e.preventDefault();
+    setTxtArr(e.target.value);
+  }
+
+  const onAddList = () => {
+    if(txtArr === '') return;
+    arr.current.push(txtArr);
+    setTxtArr('');
+  }
+  
+  const onListView = () => {
+    const arrUl = document.getElementById('listView');
+    const arrLi = document.createElement('li');
+
+    if (arr.current.length > 0) {
+      setForceRender(true)
+    }
+    
+    arr.current.forEach((list, inx) => {
+      arrLi.textContent = arr.current[inx];
+    });
+    console.log(arrUl, arrLi);
+    arrUl.appendChild(arrLi);
+  }
+
+  // 2-2
+  const txtColor = useRef(null);
+  const [txtColorCheck, setTxtColorCheck] = useState(false);
+  const onChangeColor = () => {
+    setTxtColorCheck((prev)=> !prev);
+    if(txtColorCheck) {
+      txtColor.current.style.color = ""
+    }else{
+      txtColor.current.style.color = "yellow"
+    }
+  }
+
   return (
     <>
       <h1>문제2</h1>
       <div>
         <h2>문제 2-1</h2>
         <p>
-          <input />
+          <input onChange={dataAdd} value={txtArr} />
         </p>
         <p>
           <button onClick={onAddList}>추가</button>
         </p>
         <p>
-          <button>제출</button>
+          <button onClick={onListView}>제출</button>
         </p>
 
-        <p>제출된 목록이 없습니다</p>
-        <ul>{/* -- list -- */}</ul>
+        {!forceRender && <p>제출된 목록이 없습니다</p>}
+        {forceRender && <ul id="listView"></ul>}
       </div>
       <div>
         <h2>문제 2-2</h2>
-        <p> 이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
-        <button>변경</button>
+        <p ref={txtColor}> 이 문구는 아래 버튼을 누르면 색상이 바뀝니다</p>
+        <button onClick={onChangeColor}>변경</button>
       </div>
     </>
   );

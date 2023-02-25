@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import styled from "styled-components";
 
 function Q1() {
@@ -23,6 +24,34 @@ function Q1() {
         p태그는 보이지 않아야합니다
 
   */
+  
+
+  // 문제 1-1
+  const HtmlRef = useRef(null);
+  const [txtCheck, setTxtCheck] = useState(false);
+  const onChangeValue = (e) => {
+    e.preventDefault();
+    let value = e.target.value;
+    let placeholderValue = e.target.placeholder;
+    if(value == '') {
+      HtmlRef.current.style.color = '';
+      setTxtCheck(false);
+    }else if(value == placeholderValue){
+      HtmlRef.current.style.color = 'green';
+      setTxtCheck(true);
+    }else{
+      HtmlRef.current.style.color = 'red';
+      setTxtCheck(false);
+    }
+  }
+
+  // 문제 1-2
+  const [txtView, setTxtView] = useState(false);
+  const [isAction, setIsAction] = useState(false);
+  const viewHidden = () => {
+    setTxtView((prev) => !prev);
+    setIsAction((prev) => !prev);
+  }
 
   return (
     <>
@@ -33,14 +62,15 @@ function Q1() {
           type="text"
           placeholder={"김성용"}
           style={{ textAlign: "center" }}
+          onChange={onChangeValue}
         />
-        <S.Message> 올바르게 입력하셨습니다 </S.Message>
+        <S.Message ref={HtmlRef}> {txtCheck ? '올바르게 입력하셨습니다' :'올바르게 글을 작성해주세요'} </S.Message>
       </div>
 
       <div>
         <h2>문제1-2. </h2>
-        <button>보이기</button>
-        <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>
+        <button onClick={viewHidden}>{txtView ? '숨기기' : '보이기'}</button>
+        {isAction && <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>}
       </div>
     </>
   );
