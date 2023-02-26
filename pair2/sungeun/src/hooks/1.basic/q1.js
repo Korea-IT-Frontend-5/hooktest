@@ -46,10 +46,8 @@ function Q1() {
   }
 
   // 문제 1-2
-  const [txtView, setTxtView] = useState(false);
   const [isAction, setIsAction] = useState(false);
   const viewHidden = () => {
-    setTxtView((prev) => !prev);
     setIsAction((prev) => !prev);
   }
 
@@ -69,7 +67,7 @@ function Q1() {
 
       <div>
         <h2>문제1-2. </h2>
-        <button onClick={viewHidden}>{txtView ? '숨기기' : '보이기'}</button>
+        <button onClick={viewHidden}>{isAction ? '숨기기' : '보이기'}</button>
         {isAction && <p> 이 문구는 보이기 상태일 때만 볼 수 있습니다 </p>}
       </div>
     </>
