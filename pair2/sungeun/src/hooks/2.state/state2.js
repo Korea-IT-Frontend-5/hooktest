@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
-import useInputs from "./useInputs";
+import UseInputs from "../../components/inputs/useInputs";
 
 function State2() {
   /*  
@@ -13,7 +13,7 @@ function State2() {
         
     Q2. 댓글 작성 수정 삭제 기능을 구현해보세요 :)
             1. 댓글 작성 기능
-            2. 댓글 수정 기능 
+            2. 댓글 수정 기능
             3. 댓글 삭제 기능 ( 본인이 작성한 댓글만 삭제할 수 있습니다, myComment 활용 )
     */
 
@@ -63,32 +63,37 @@ function State2() {
       },
     ],
   });
- 
-  const [{newUser, newContent}, onChangeForm, setValues] = useInputs({newUser: '', newContent: ''});
 
-  const onClickAddBtn = () => {
-   post.Comments.push({
-      User: {
-        nickname: newUser,
-      },
-      content: newContent,
-      myComment: true
-    });
-    setPost({...post});  
-    setValues({newUser: '', newContent: ''});
+  const [{nickname, content}, onchangForm, reset] = UseInputs({
+    nickname: '',
+    content: '',
+  });
+
+  const commJoin = (e) => {
+    const newPostComm = [{'User' : {nickname}, content, myComment: true}, ...post.Comments];
+    post.Comments = newPostComm;
+    setPost(post);
+    reset();
+  }
+  
+  const onCommDel = (list) => {
+    if (list.myComment){
+      const delComm = post.Comments.filter((newlist) => newlist !== list);
+      post.Comments = delComm;
+      setPost({...post});
+    }else{
+      alert('본인 작성 댓글이 아닙니다.')
+    }
   }
 
-  const onClickDeleteBtn = (comment) => {
-
-    if (comment.myComment) {
-      const newPostDeleteCmt = post.Comments.filter((cmt) => (cmt !== comment));
-      console.log(newPostDeleteCmt);
-     
-      setPost((prev) => ({...prev, Comments: newPostDeleteCmt}));  
-    } else return;
+  const onCommEdit = (list, content, setIsEdit) => {
+    if (list.myComment){
+      list.content = content;
+      setIsEdit((prev)=>!prev);
+    }else{
+      alert('본인 작성 댓글이 아닙니다.')
+    }
   }
-
-
   return (
     <S.Wrapper>
       <h1>문제2</h1>
@@ -99,6 +104,7 @@ function State2() {
       <S.PostInfo>
         <p>
           작성자: <span>{post.User.nickname}</span>
+          
         </p>
         <p>
           작성자 나이: <span>{post.User.age}</span>
@@ -111,14 +117,15 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" value={newUser} name="newUser" onChange={onChangeForm}/>
-        <input placeholder="댓글 내용" value={newContent} name="newContent" onChange={onChangeForm} />
-        <button onClick={onClickAddBtn}>댓글 작성</button>
+        <input name="nickname" value={nickname} onChange={onchangForm} placeholder="작성자" />
+        <input name="content" value={content} onChange={onchangForm} placeholder="댓글 내용" />
+        <button onClick={commJoin}>댓글 작성</button>
       </div>
       <S.CommentList>
-        {post.Comments.map((comment, idx) => (
-          <Comment comment={comment} idx={idx} onClickDeleteBtn={onClickDeleteBtn} />
-        ))}
+        {/* list */}
+        {post.Comments.map((list, inx) => {
+          return <Comment key={inx} list={list} onCommDel={onCommDel} onCommEdit={onCommEdit} />
+        })}
       </S.CommentList>
     </S.Wrapper>
   );

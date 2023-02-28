@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Q3components from "../../components/1.basic/q3components";
 
 function Q3() {
@@ -22,21 +22,41 @@ function Q3() {
     해당 컴포넌트는 보이지 않아야하며, 줄넘기 횟수도 더이상 증가해서는 안됩니다.
     또한, 줄넘기 횟수는 0으로 고정되어야합니다.
   */
-
+  const [state, setState] = useState(false);
   const [count, setCount] = useState(0);
-  const [isStart, setIsStart] = useState(false);
+  useEffect(() => {
+    console.log("실행됨");
+    if (state) {
+      console.log("if 실행1");
+      setTimeout(() => {
+        setCount((prev) => prev++);
+      }, 2000);
+    }
+  }, [state, count]);
 
   return (
     <>
       <h1>문제3</h1>
       <div>
         <p> 줄넘기 횟수 : {count} </p>
-        {isStart && <Q3components setCount={setCount} />}
+        <Q3components />
         <p>
-          <button onClick={() => setIsStart(true)}>줄넘기 시작</button>
+          <button
+            onClick={() => {
+              setState(true);
+            }}
+          >
+            줄넘기 시작
+          </button>
         </p>
         <p>
-          <button onClick={() => {setIsStart(false); setCount(0)}}>줄넘기 중지</button>
+          <button
+            onClick={() => {
+              setState(false);
+            }}
+          >
+            줄넘기 중지
+          </button>
         </p>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Q3components from "../../components/1.basic/q3components";
 
 function Q3() {
@@ -24,19 +24,27 @@ function Q3() {
   */
 
   const [count, setCount] = useState(0);
-  const [isStart, setIsStart] = useState(false);
+  const [isAction, setIsAction] = useState(false);
+
+  const jumpStart = () => {
+    setIsAction(true);
+  }
+
+  const jumpEnd = () => {
+    setIsAction(false);
+  }
 
   return (
     <>
       <h1>문제3</h1>
       <div>
         <p> 줄넘기 횟수 : {count} </p>
-        {isStart && <Q3components setCount={setCount} />}
+        {isAction && <Q3components setCount={setCount} isAction={isAction} />}
         <p>
-          <button onClick={() => setIsStart(true)}>줄넘기 시작</button>
+          <button onClick={jumpStart}>줄넘기 시작</button>
         </p>
         <p>
-          <button onClick={() => {setIsStart(false); setCount(0)}}>줄넘기 중지</button>
+          <button onClick={jumpEnd}>줄넘기 중지</button>
         </p>
       </div>
     </>

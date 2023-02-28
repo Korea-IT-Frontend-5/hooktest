@@ -17,10 +17,10 @@ function State1() {
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
   const [newPlayList, setNewPlayList] = useState(PlayListMock.playlist);
 
-  const [{ title, signer }, onchangForm, reset] = UseInputs({
-    title: "",
-    signer: "",
-  });
+  const [{ title, signer}, onchangForm, reset] = UseInputs({
+    title: '',
+    signer: '',
+  })
 
   const onSummerAdd = (e) => {
     if (title !== "" && signer !== "") {
@@ -29,14 +29,12 @@ function State1() {
     } else {
       alert("값이 비어있어요");
     }
-  };
+  }
 
-  const onPlayListDel = (title) => {
-    const delPlayList = newPlayList.filter(
-      (delList) => delList.title !== title
-    );
-    setNewPlayList(delPlayList);
-  };
+  const onPlayListDel = ( title ) => {
+    const delPlayList = newPlayList.filter((delList)=> delList.title !== title);
+    setNewPlayList(delPlayList)
+  }
 
   return (
     <>
@@ -46,7 +44,7 @@ function State1() {
           <li key={inx}>
             <h3>{list.title}</h3>
             <p>{list.signer}</p>
-            <button onClick={() => onPlayListDel(list.title)}>삭제</button>
+            <button onClick={()=>onPlayListDel(list.title)}>삭제</button>
           </li>
         ))}
       </ul>
@@ -55,8 +53,7 @@ function State1() {
           곡명 : <input name="title" value={title} onChange={onchangForm} />
         </p>
         <p>
-          가수/작곡 :{" "}
-          <input name="signer" value={signer} onChange={onchangForm} />
+          가수/작곡 : <input name="signer" value={signer} onChange={onchangForm} />
         </p>
         <p>
           <button onClick={onSummerAdd}>추가</button>

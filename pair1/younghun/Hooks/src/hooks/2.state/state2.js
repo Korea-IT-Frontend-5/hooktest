@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
-import useInputs from "./useInputs";
 
 function State2() {
   /*  
@@ -13,7 +12,7 @@ function State2() {
         
     Q2. 댓글 작성 수정 삭제 기능을 구현해보세요 :)
             1. 댓글 작성 기능
-            2. 댓글 수정 기능 
+            2. 댓글 수정 기능
             3. 댓글 삭제 기능 ( 본인이 작성한 댓글만 삭제할 수 있습니다, myComment 활용 )
     */
 
@@ -63,32 +62,81 @@ function State2() {
       },
     ],
   });
- 
-  const [{newUser, newContent}, onChangeForm, setValues] = useInputs({newUser: '', newContent: ''});
+  const [comments, setComments] = useState(post.Comments);
 
-  const onClickAddBtn = () => {
-   post.Comments.push({
-      User: {
-        nickname: newUser,
-      },
-      content: newContent,
-      myComment: true
+  const [modifyInputs, setModifyInputs] = useState({
+    commentsNickname: "",
+    commentsContent: "",
+  });
+  const { commentsNickname, commentsContent } = modifyInputs;
+  useEffect(() => {
+    let i = 1;
+    setComments((prev) => {
+      return prev.map((comment) => {
+        return { ...comment, id: i++ };
+      });
     });
-    setPost({...post});  
-    setValues({newUser: '', newContent: ''});
-  }
+  }, [comments.length]);
+  const AddCommentsBtn = () => {
+    setComments((prev) => [
+      ...prev,
+      {
+        User: { nickname: nickname },
+        content: content,
+        myComment: true,
+      },
+    ]);
+    setInputs({
+      nickname: "",
+      content: "",
+    });
+  };
 
-  const onClickDeleteBtn = (comment) => {
+  const [inputs, setInputs] = useState({
+    nickname: "",
+    content: "",
+  });
+  const { nickname, content } = inputs;
 
-    if (comment.myComment) {
-      const newPostDeleteCmt = post.Comments.filter((cmt) => (cmt !== comment));
-      console.log(newPostDeleteCmt);
-     
-      setPost((prev) => ({...prev, Comments: newPostDeleteCmt}));  
-    } else return;
-  }
-
-
+  const handleNewPostCommentsChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+  const deleteComment = (id) => {
+    setComments((prev) => {
+      return prev.filter((comment) => {
+        return comment.id !== id;
+      });
+    });
+    console.log(comments);
+  };
+  const handleComment = (e) => {
+    const { name, value } = e.target;
+    setModifyInputs({
+      ...modifyInputs,
+      [name]: value,
+    });
+  };
+  const modifyComment = (id, myComment) => {
+    setComments((prev) => {
+      return prev.map((comment) => {
+        return comment.id === id
+          ? {
+              ...comment,
+              ...{
+                User: { nickname: commentsNickname + "(수정됨)" },
+                content: commentsContent,
+              },
+            }
+          : comment;
+      });
+    });
+    setModifyInputs({ commentsNickname: "", commentsContent: "" });
+    console.log(comments);
+  };
   return (
     <S.Wrapper>
       <h1>문제2</h1>
@@ -111,14 +159,34 @@ function State2() {
         <p>
           댓글 수: <span>{post.Comments.length}</span>
         </p>
-        <input placeholder="작성자" value={newUser} name="newUser" onChange={onChangeForm}/>
-        <input placeholder="댓글 내용" value={newContent} name="newContent" onChange={onChangeForm} />
-        <button onClick={onClickAddBtn}>댓글 작성</button>
+        <input
+          name="nickname"
+          onChange={handleNewPostCommentsChange}
+          placeholder="작성자"
+          value={nickname}
+        />
+        <input
+          name="content"
+          onChange={handleNewPostCommentsChange}
+          placeholder="댓글 내용"
+          value={content}
+        />
+        <button onClick={AddCommentsBtn}>댓글 작성</button>
       </div>
       <S.CommentList>
-        {post.Comments.map((comment, idx) => (
-          <Comment comment={comment} idx={idx} onClickDeleteBtn={onClickDeleteBtn} />
-        ))}
+        {/* list */}
+        {/* 예시 데이터 */}
+        {comments.map((comments, index) => {
+          return (
+            <Comment
+              Comments={comments}
+              key={index}
+              deleteComment={deleteComment}
+              handleComment={handleComment}
+              modifyComment={modifyComment}
+            />
+          );
+        })}
       </S.CommentList>
     </S.Wrapper>
   );
