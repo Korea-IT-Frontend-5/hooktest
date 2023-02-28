@@ -35,11 +35,11 @@ function Q2() {
 
   // 1번 문제
   // 조건을 하나 추가하기로 함 input안에 value가 없을때는 추가되지 않도록 설정함
-  const arr = useRef([]);                                 // 빈 배열 생성
-  const inputRef = useRef(null);                          // input에 입력한 값
-  const [forceRender, setForceRender] = useState(false);  // 배열이 비어있는지 아닌지에 대한 상태
-  const [refState, setRefState] = useState(false);        // 추가될 때마다 강제 랜더링을 위한 state
-  const [submitState, setSubmitState] = useState(false);  // 제출 상태
+  const arr = useRef([]); // 빈 배열 생성
+  const inputRef = useRef(null); // input에 입력한 값
+  const [forceRender, setForceRender] = useState(false); // 배열이 비어있는지 아닌지에 대한 상태
+  const [refState, setRefState] = useState(false); // 추가될 때마다 강제 랜더링을 위한 state
+  const [submitState, setSubmitState] = useState(false); // 제출 상태
 
   // 추가버튼 클릭 시
   const onAddList = () => {
@@ -49,8 +49,8 @@ function Q2() {
     // 입력칸에 값이 있다면 ➡️ 배열에 값 추가
     console.log(inputRef.current.value);
     arr.current.push(inputRef.current.value);
-    inputRef.current.value = "";              // 입력칸 초기화
-    setRefState(prev => !prev);               // 추가 버튼을 클릭할때마다 강제 랜더링
+    inputRef.current.value = ""; // 입력칸 초기화
+    setRefState((prev) => !prev); // 추가 버튼을 클릭할때마다 강제 랜더링
   };
 
   // 제출버튼 클릭 시
@@ -65,13 +65,12 @@ function Q2() {
     setSubmitState(true);
   };
 
-
   // 2번 문제
-  const Htmlref = useRef(null);             // ref를 이용하여 변경할 Html의 요소들을 모을 공간
-  
+  const Htmlref = useRef(null); // ref를 이용하여 변경할 Html의 요소들을 모을 공간
+
   // 변경 버튼 클릭 시
   const onChangeColor = () => {
-    Htmlref.current.style.color = "red";        // Htmlref의 color 요소값을 red로 선언
+    Htmlref.current.style.color = "red"; // Htmlref의 color 요소값을 red로 선언
   };
 
   // 이 풀이는 강사님이 알려주신 코드를 같다붙이는것이기에 학습에 큰 영향이 없다고 판단 ➡️ 주석을 추가하여 하나하나 이해하고 설명할 수 있도록 풀이
@@ -82,7 +81,7 @@ function Q2() {
       <div>
         <h2>문제 2-1</h2>
         <p>
-          <input ref={inputRef}/>
+          <input ref={inputRef} />
         </p>
         <p>
           <button onClick={onAddList}>추가</button>
@@ -90,8 +89,11 @@ function Q2() {
         <p>
           <button onClick={submitBtn}>제출</button>
         </p>
-        {forceRender && <p>제출된 목록이 없습니다</p>}
-         <ul>{submitState && arr.current.map((item) => <li>{item}</li>)}</ul>
+        {forceRender ? (
+          <p>제출된 목록이 없습니다</p>
+        ) : (
+          <ul>{submitState && arr.current.map((item) => <li>{item}</li>)}</ul>
+        )}
       </div>
       <div>
         <h2>문제 2-2</h2>
