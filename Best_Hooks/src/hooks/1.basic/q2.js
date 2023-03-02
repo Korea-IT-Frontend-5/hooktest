@@ -89,11 +89,8 @@ function Q2() {
         <p>
           <button onClick={submitBtn}>제출</button>
         </p>
-        {forceRender ? (
-          <p>제출된 목록이 없습니다</p>
-        ) : (
-          <ul>{submitState && arr.current.map((item) => <li>{item}</li>)}</ul>
-        )}
+        {forceRender ? <p>제출된 목록이 없습니다</p> :
+         <ul>{submitState && arr.current.map((item) => <li>{item}</li>)}</ul>}
       </div>
       <div>
         <h2>문제 2-2</h2>

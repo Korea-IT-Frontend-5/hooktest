@@ -5,13 +5,11 @@ function DetailPage() {
   const params = useParams();
   const navigate = useNavigate();
   const [productPrice, setProductPrice] = useState("");
-  const [product, setProduct] = useState(
-    productList.products.filter((product) => {
-      return product.productNumber === params.productNumber;
-    })[0]
-  );
+  const firstRenderProduct = productList.products.find((product) => {
+    return product.productNumber === params.productNumber;
+  });
+  const [product, setProduct] = useState(firstRenderProduct);
 
-  console.log(product);
   const [reviews, setReviews] = useState(product.Review);
   const [inputs, setInputs] = useState({
     reviewer: "",
@@ -19,6 +17,7 @@ function DetailPage() {
     rating: "",
   });
   const { reviewer, review, rating } = inputs;
+
   useEffect(() => {
     setProductPrice(
       product.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
