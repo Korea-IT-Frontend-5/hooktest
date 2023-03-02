@@ -1,3 +1,5 @@
+import { useState } from "react";
+import UseInputs from "../../components/inputs/useInputs";
 import PlayListMock from "../../__mock__/playList.json";
 
 function State1() {
@@ -11,29 +13,53 @@ function State1() {
     삭제 버턴을 눌렀을 때 데이터가 삭제될 수 있도록 해주세요
   */
 
-  console.log(PlayListMock.playlist);
+  // console.log(PlayListMock.playlist);
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
+  const [newPlayList, setNewPlayList] = useState(PlayListMock.playlist);
+
+  const [{ title, signer }, onchangForm, reset] = UseInputs({
+    title: "",
+    signer: "",
+  });
+
+  const onSummerAdd = (e) => {
+    if (title !== "" && signer !== "") {
+      setNewPlayList([...newPlayList, { title, signer }]);
+      reset();
+    } else {
+      alert("값이 비어있어요");
+    }
+  };
+
+  const onPlayListDel = (title) => {
+    const delPlayList = newPlayList.filter(
+      (delList) => delList.title !== title
+    );
+    setNewPlayList(delPlayList);
+  };
 
   return (
     <>
       <h1>문제1</h1>
       <ul>
-        {/* list */}
-        {/* 예시 데이터입니다 */}
-        <li>
-          <h3>Summer</h3>
-          <p>Joe Hisaishi</p>
-        </li>
+        {newPlayList.map((list, inx) => (
+          <li key={inx}>
+            <h3>{list.title}</h3>
+            <p>{list.signer}</p>
+            <button onClick={() => onPlayListDel(list.title)}>삭제</button>
+          </li>
+        ))}
       </ul>
       <div>
         <p>
-          곡명 : <input />
+          곡명 : <input name="title" value={title} onChange={onchangForm} />
         </p>
         <p>
-          가수/작곡 : <input />
+          가수/작곡 :{" "}
+          <input name="signer" value={signer} onChange={onchangForm} />
         </p>
         <p>
-          <button>추가</button>
+          <button onClick={onSummerAdd}>추가</button>
         </p>
       </div>
     </>

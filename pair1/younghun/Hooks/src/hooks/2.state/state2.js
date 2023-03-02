@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Comment from "../../components/2.state/comment";
-import UseInputs from "../../components/inputs/useInputs";
 
 function State2() {
   /*  
@@ -63,39 +62,80 @@ function State2() {
       },
     ],
   });
+  const [comments, setComments] = useState(post.Comments);
 
-  const [{ nickname, content }, onchangForm, reset] = UseInputs({
+  const [modifyInputs, setModifyInputs] = useState({
+    commentsNickname: "",
+    commentsContent: "",
+  });
+  const { commentsNickname, commentsContent } = modifyInputs;
+  useEffect(() => {
+    let i = 1;
+    setComments((prev) => {
+      return prev.map((comment) => {
+        return { ...comment, id: i++ };
+      });
+    });
+  }, [comments.length]);
+  const AddCommentsBtn = () => {
+    setComments((prev) => [
+      ...prev,
+      {
+        User: { nickname: nickname },
+        content: content,
+        myComment: true,
+      },
+    ]);
+    setInputs({
+      nickname: "",
+      content: "",
+    });
+  };
+
+  const [inputs, setInputs] = useState({
     nickname: "",
     content: "",
   });
+  const { nickname, content } = inputs;
 
-  const commJoin = (e) => {
-    const newPostComm = [
-      { User: { nickname }, content, myComment: true },
-      ...post.Comments,
-    ];
-    post.Comments = newPostComm;
-    setPost(post);
-    reset();
+  const handleNewPostCommentsChange = (e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
   };
-
-  const onCommDel = (list) => {
-    if (list.myComment) {
-      const delComm = post.Comments.filter((newlist) => newlist !== list);
-      post.Comments = delComm;
-      setPost({ ...post });
-    } else {
-      alert("본인 작성 댓글이 아닙니다.");
-    }
+  const deleteComment = (id) => {
+    setComments((prev) => {
+      return prev.filter((comment) => {
+        return comment.id !== id;
+      });
+    });
+    console.log(comments);
   };
-
-  const onCommEdit = (list, content, setIsEdit) => {
-    if (list.myComment) {
-      list.content = content;
-      setIsEdit((prev) => !prev);
-    } else {
-      alert("본인 작성 댓글이 아닙니다.");
-    }
+  const handleComment = (e) => {
+    const { name, value } = e.target;
+    setModifyInputs({
+      ...modifyInputs,
+      [name]: value,
+    });
+  };
+  const modifyComment = (id, myComment) => {
+    setComments((prev) => {
+      return prev.map((comment) => {
+        return comment.id === id
+          ? {
+              ...comment,
+              ...{
+                User: { nickname: commentsNickname + "(수정됨)" },
+                content: commentsContent,
+              },
+            }
+          : comment;
+      });
+    });
+    setModifyInputs({ commentsNickname: "", commentsContent: "" });
+    console.log(comments);
   };
   return (
     <S.Wrapper>
@@ -121,27 +161,29 @@ function State2() {
         </p>
         <input
           name="nickname"
-          value={nickname}
-          onChange={onchangForm}
+          onChange={handleNewPostCommentsChange}
           placeholder="작성자"
+          value={nickname}
         />
         <input
           name="content"
-          value={content}
-          onChange={onchangForm}
+          onChange={handleNewPostCommentsChange}
           placeholder="댓글 내용"
+          value={content}
         />
-        <button onClick={commJoin}>댓글 작성</button>
+        <button onClick={AddCommentsBtn}>댓글 작성</button>
       </div>
       <S.CommentList>
         {/* list */}
-        {post.Comments.map((list, inx) => {
+        {/* 예시 데이터 */}
+        {comments.map((comments, index) => {
           return (
             <Comment
-              key={inx}
-              list={list}
-              onCommDel={onCommDel}
-              onCommEdit={onCommEdit}
+              Comments={comments}
+              key={index}
+              deleteComment={deleteComment}
+              handleComment={handleComment}
+              modifyComment={modifyComment}
             />
           );
         })}
