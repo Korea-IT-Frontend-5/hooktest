@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 function ProductCard({ onNavigate, product }) {
-  const [productPrice, setProductPrice] = useState("");
-  useEffect(() => {
-    setProductPrice(
-      product.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    );
-  });
+  const productPrice = product.productPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
     <S.Item onClick={() => onNavigate(product.productNumber)}>
       <h4>{product.productName}</h4>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UseInputs from "../../components/inputs/useInputs";
+import useInputs from "../../components/inputs/useInputs";
 import PlayListMock from "../../__mock__/playList.json";
 
 function State1() {
@@ -17,7 +17,7 @@ function State1() {
   /* 데이터 콘솔에 찍어두었으니 확인해볼 것 */
   const [newPlayList, setNewPlayList] = useState(PlayListMock.playlist);
 
-  const [{ title, signer }, onchangForm, reset] = UseInputs({
+  const [{ title, signer }, onchangForm, reset] = useInputs({
     title: "",
     signer: "",
   });

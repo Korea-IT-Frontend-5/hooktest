@@ -69,7 +69,8 @@ function State2() {
     content: "",
   });
 
-  const commJoin = (e) => {
+  // 댓글 작성
+  const onCommJoin = (e) => {
     const newPostComm = [
       { User: { nickname }, content, myComment: true },
       ...post.Comments,
@@ -79,24 +80,47 @@ function State2() {
     reset();
   };
 
+  // 댓글 삭제
   const onCommDel = (list) => {
+    console.log("@@");
+    console.log(list);
+    console.log("@@");
+    if (!list.myComment) {
+      alert("본인 작성 댓글이 아닙니다.");
+      return; // early return 적용!
+    }
+
+    // 댓글이 삭제된 배열 생성
+    const newPost = { ...post }; // 여기가 불변성을 지키기위해 만듬
+    // const delIndex = newPost.Comments.map((item) => item === list);
+
+    const delIndex = newPost.Comments.map((item) => 
+      {return (item !== list && item)});
+    newPost.Comments.splice(delIndex, 1);
+    setPost(newPost);
+  };
+
+  // 댓글 수정
+  const onCommEdit = (list, content, setIsEdit) => {
+    // 내가 작성한 댓글이라면
     if (list.myComment) {
-      const delComm = post.Comments.filter((newlist) => newlist !== list);
-      post.Comments = delComm;
-      setPost({ ...post });
+      const editedComment = { ...list, content }; // 기존 객체를 복사하고 content 속성만 업데이트한 새로운 객체 생성  : 불변성 지키기 위함
+      setIsEdit((prev) => !prev); // 수정 모드 (시작/종료)
+      setPost((prevPost) => ({
+        // 기존 상태(prevPost)를 업데이트한 새로운 상태 객체를 생성하여 setPost로 전달
+        ...prevPost,
+        Comments: prevPost.Comments.map((comment) => {
+          if (comment === list) {
+            return editedComment; // 수정된 댓글 객체를 반환
+          }
+          return comment; // 수정하지 않은 다른 댓글 객체는 그대로 반환
+        }),
+      }));
     } else {
       alert("본인 작성 댓글이 아닙니다.");
     }
   };
 
-  const onCommEdit = (list, content, setIsEdit) => {
-    if (list.myComment) {
-      list.content = content;
-      setIsEdit((prev) => !prev);
-    } else {
-      alert("본인 작성 댓글이 아닙니다.");
-    }
-  };
   return (
     <S.Wrapper>
       <h1>문제2</h1>
@@ -131,7 +155,7 @@ function State2() {
           onChange={onchangForm}
           placeholder="댓글 내용"
         />
-        <button onClick={commJoin}>댓글 작성</button>
+        <button onClick={onCommJoin}>댓글 작성</button>
       </div>
       <S.CommentList>
         {/* list */}

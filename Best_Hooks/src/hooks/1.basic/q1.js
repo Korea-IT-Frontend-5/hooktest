@@ -1,5 +1,5 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useRef, useState } from "react";
+import styled, { css } from "styled-components";
 
 function Q1() {
   /* 
@@ -26,12 +26,19 @@ function Q1() {
   */
 
   //문제 1-1
-  const [inputData, setInputData] = useState("");
-  const [placeholder, setPlaceholder] = useState("");
+  const Htmlref = useRef(null); // 올바르게 작성했는지 확인해주는 ref
+  const inputref = useRef(null); // input텍스트를 기억하는 ref
+  const [text, setText] = useState(""); // text의 상태값을 기억하는 state
 
-  const handleInputChange = (e) => {
-    setPlaceholder(e.target.placeholder);
-    setInputData(e.target.value);
+  const textChange = () => {
+    // 아래 선언문이 바뀔때마다 계속 실행됨 화면이 마운트될때 선언해도 충분할텐데...
+    if (inputref.current.value === inputref.current.placeholder) {
+      setText("올바르게 입력하셨습니다");
+      Htmlref.current.style.color = "green";
+      return;
+    }
+    Htmlref.current.style.color = "red";
+    setText("올바르게 글을 작성해주세요");
   };
 
   //문제 1-2
@@ -45,18 +52,13 @@ function Q1() {
       <div>
         <h2>문제1-1.</h2>
         <input
+          ref={inputref}
           type="text"
           placeholder={"김성용"}
           style={{ textAlign: "center" }}
-          onChange={handleInputChange}
+          onChange={textChange}
         />
-
-        {placeholder &&
-          (inputData === placeholder ? (
-            <S.Message> 올바르게 입력하셨습니다 </S.Message>
-          ) : (
-            <S.BedMessage> 올바르게 글을 작성해주세요 </S.BedMessage>
-          ))}
+        <S.Message ref={Htmlref}>{text}</S.Message>
       </div>
       <div>
         <h2>문제1-2. </h2>
@@ -68,14 +70,19 @@ function Q1() {
 }
 export default Q1;
 
-const Message = styled.p`
-  color: green;
-`;
-const BedMessage = styled.p`
-  color: red;
+const colorCSS = {
+  red: css`
+    color: red;
+  `,
+  green: css`
+    color: green;
+  `,
+};
+
+export const Message = styled.p`
+  ${({ color }) => colorCSS[color]}
 `;
 
 const S = {
   Message,
-  BedMessage,
 };
