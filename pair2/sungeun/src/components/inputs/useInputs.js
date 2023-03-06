@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const UseInputs = (initialValues) => {
+const useInputs = (initialValues) => {
   const [values, setValues] = useState(initialValues);
   const onChang = (event) => {
     setValues((prev) => ({
@@ -13,4 +13,4 @@ const UseInputs = (initialValues) => {
   return [values, onChang, onReset];
 }
 
-export default UseInputs;
+export default useInputs;

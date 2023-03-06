@@ -69,7 +69,7 @@ function State2() {
     content: '',
   });
 
-  const commJoin = (e) => {
+  const onCommJoin = (e) => {
     const newPostComm = [{'User' : {nickname}, content, myComment: true}, ...post.Comments];
     post.Comments = newPostComm;
     setPost(post);
@@ -119,7 +119,7 @@ function State2() {
         </p>
         <input name="nickname" value={nickname} onChange={onchangForm} placeholder="작성자" />
         <input name="content" value={content} onChange={onchangForm} placeholder="댓글 내용" />
-        <button onClick={commJoin}>댓글 작성</button>
+        <button onClick={onCommJoin}>댓글 작성</button>
       </div>
       <S.CommentList>
         {/* list */}
